@@ -8,7 +8,7 @@ export const Layout = () => {
     return (
         <ScrollToTop>
             <Navbar />
-                <Outlet />
+                <Outlet /> {/* Outlet is a placeholder for nested routes */}
             <Footer />
         </ScrollToTop>
     )

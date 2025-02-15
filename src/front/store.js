@@ -26,6 +26,11 @@ export default function storeReducer(store, action = {}) {
         ...store,
         todos: store.todos.map((todo) => (todo.id === id ? { ...todo, background: color } : todo))
       };
+    case 'remove_task':
+      return {
+        ...store,
+        todos: store.todos.filter((todo) => todo.id !== action.payload.id)
+      };
     default:
       throw Error('Unknown action.');
   }    
