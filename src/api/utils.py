@@ -39,3 +39,9 @@ def generate_sitemap(app):
         <p>Start working on your project by following the <a href="https://start.4geeksacademy.com/starters/full-stack" target="_blank">Quick Start</a></p>
         <p>Remember to specify a real endpoint path like: </p>
         <ul style="text-align: left;">"""+links_html+"</ul></div>"
+
+def check_fields(body, fields):
+    for key in fields:
+        if key not in body:
+            raise APIException(f"El campo {key} es requerido", status_code=400)
+    return (body.get(key) for key in fields)

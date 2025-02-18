@@ -16,6 +16,15 @@ class User(db.Model):
 
     is_active = db.Column(db.Boolean(), unique=False, nullable=False)
 
+    # constructor
+    def __init__(self, email, password, username, first_name, last_name, is_active=True):
+        self.email = email
+        self.password = password
+        self.username = username
+        self.first_name = first_name
+        self.last_name = last_name
+        self.is_active = is_active
+
     def __repr__(self):
         return f'<User {self.email}>'
 
@@ -35,7 +44,6 @@ class Post(db.Model):
     title = db.Column(db.String(120), unique=False, nullable=False)
 
     author_id = db.Column(db.Integer, db.ForeignKey('user.id'), nullable=False)
-    
     author = db.relationship('User') # Objeto de la clase User
 
     def __repr__(self):
@@ -45,7 +53,7 @@ class Post(db.Model):
         return {
             "id": self.id,
             "title": self.title,
-            "author_id": self.author_id,
 
+            "author_id": self.author_id,
             "author": self.author.serialize()
         }    
