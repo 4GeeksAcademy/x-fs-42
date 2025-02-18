@@ -106,3 +106,51 @@ def get_posts():
     posts = Post.query.all()
     result = [ post.serialize() for post in posts ]
     return jsonify(result), 200
+
+@api.route('/posts', methods=['POST'])
+def create_post():
+
+    body = request.get_json()
+
+    if not body:
+        raise APIException("You need to specify the request body as a json object", status_code=400)
+
+    fields = ["title", "author_email"]
+    title, author_email = check_fields(body, fields)
+
+    searched_author = User.query.filter_by(email=author_email).first()
+
+    if not searched_author:
+        raise APIException("Author not found", status_code=404)
+
+    new_post = Post(title=title, author=searched_author)
+
+    try:
+        db.session.add(new_post)
+        db.session.commit()
+    except Exception as error:
+        raise APIException(str(error), status_code=500)
+    
+    return jsonify(new_post.serialize()), 201
+
+
+@api.route('/posts/<int:id>', methods=['DELETE'])
+def delete_post(id):
+
+    if id is None:
+        raise APIException("You need to specify the id", status_code=400)
+    
+    post = Post.query.get(id)
+
+    if not post:
+        raise APIException("Post not found", status_code=404)
+
+    try:
+        db.session.delete(post)
+        db.session.commit()
+        
+    except Exception as error:
+        db.session.rollback()
+        raise APIException(str(error), status_code=500)
+    
+    return jsonify({ "success": "ok" }), 200

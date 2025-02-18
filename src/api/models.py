@@ -51,6 +51,12 @@ class Post(db.Model):
         'publicaciones', cascade='all, delete-orphan')
     )
 
+    #constructor depende de la relación con User
+    # se le debe pasar el objeto User o author
+    def __init__(self, title, author):
+        self.title = title
+        self.author = author # debe ser un objeto User
+
     def __repr__(self):
         return f'<Post {self.title}>'
 
