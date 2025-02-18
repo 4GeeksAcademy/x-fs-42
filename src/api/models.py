@@ -64,7 +64,5 @@ class Post(db.Model):
         return {
             "id": self.id,
             "title": self.title,
-
-            "author_id": self.author_id,
-            #"author": self.author.serialize()
-        }    
+            "author": self.author.username,
+        }

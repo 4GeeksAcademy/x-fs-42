@@ -12,6 +12,9 @@ export const initialStore=()=>{
         title: "Do my homework",
         background: null,
       }
+    ],
+    posts: [
+
     ]
   }
 }
@@ -25,6 +28,11 @@ export default function storeReducer(store, action = {}) {
       return {
         ...store,
         todos: store.todos.map((todo) => (todo.id === id ? { ...todo, background: color } : todo))
+      };
+    case 'load_posts':
+      return {
+        ...store,
+        posts: action.payload
       };
     case 'remove_task':
       return {
