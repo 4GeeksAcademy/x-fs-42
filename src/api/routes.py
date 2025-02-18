@@ -50,6 +50,56 @@ def create_user():
 
         return jsonify(new_user.serialize()), 201
 
+@api.route('/users/<int:id>', methods=['PUT'])
+def edit_user(id):
+
+    if id is None:
+        raise APIException("You need to specify the id", status_code=400)
+    
+    user = User.query.get(id) # Devuelve None si no encuentra el usuario
+
+    if not user:
+        raise APIException("User not found", status_code=404)
+
+    body = request.get_json()
+
+    fields = ["password", "username", "first_name", "last_name", "is_active"]
+
+    for key in fields:
+        if key in body:
+            setattr(user, key, body[key])
+
+    try:
+        db.session.commit()
+    except Exception as error:
+        db.session.rollback()
+
+        raise APIException(str(error), status_code=500)
+
+    return jsonify(user.serialize()), 200
+
+
+@api.route('/users/<int:id>', methods=['DELETE'])
+def delete_user(id):
+
+    if id is None:
+        raise APIException("You need to specify the id", status_code=400)
+    
+    user = User.query.get(id)
+
+    if not user:
+        raise APIException("User not found", status_code=404)
+
+    try:
+        db.session.delete(user)
+        db.session.commit()
+        
+    except Exception as error:
+        db.session.rollback()
+        raise APIException(str(error), status_code=500)
+    
+    return jsonify({ "success": "ok" }), 200
+
 @api.route('/posts', methods=['GET'])
 def get_posts():
 

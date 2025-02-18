@@ -33,6 +33,7 @@ class User(db.Model):
         return {
             "id": self.id,
             "email": self.email,
+            "post": list(map(lambda x: x.serialize(), self.publicaciones)),
             # do not serialize the password, its a security breach
         }
 
@@ -44,7 +45,11 @@ class Post(db.Model):
     title = db.Column(db.String(120), unique=False, nullable=False)
 
     author_id = db.Column(db.Integer, db.ForeignKey('user.id'), nullable=False)
-    author = db.relationship('User') # Objeto de la clase User
+
+    # Relación con la tabla User (1 a muchos)
+    author = db.relationship('User', backref=db.backref(
+        'publicaciones', cascade='all, delete-orphan')
+    )
 
     def __repr__(self):
         return f'<Post {self.title}>'
@@ -55,5 +60,5 @@ class Post(db.Model):
             "title": self.title,
 
             "author_id": self.author_id,
-            "author": self.author.serialize()
+            #"author": self.author.serialize()
         }    
