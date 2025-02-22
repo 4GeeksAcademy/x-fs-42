@@ -21,19 +21,19 @@ export const initialStore=()=>{
 
 export default function storeReducer(store, action = {}) {
   switch(action.type){
-    case 'add_task':
-
-      const { id,  color } = action.payload
-
+    
+    case 'add_post':
       return {
         ...store,
-        todos: store.todos.map((todo) => (todo.id === id ? { ...todo, background: color } : todo))
+        posts: [...store.posts, action.payload]
       };
+
     case 'load_posts':
       return {
         ...store,
         posts: action.payload
       };
+
     case 'remove_task':
       return {
         ...store,
