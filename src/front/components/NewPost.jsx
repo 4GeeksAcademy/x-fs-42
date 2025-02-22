@@ -1,5 +1,6 @@
 import { useState } from "react";
 import useGlobalReducer from "../hooks/useGlobalReducer.jsx";
+import toast from "react-hot-toast";
 
 const NewPost = () => {
     const { dispatch } = useGlobalReducer();
@@ -15,6 +16,7 @@ const NewPost = () => {
         const publishPost = async (post) => {
 
             if(post.title.trim() === "" || post.author_email.trim() === ""){
+                toast.error("Title and Author e-mail are required");
                 throw new Error("Title and Author e-mail are required");
             }
 
@@ -35,6 +37,7 @@ const NewPost = () => {
                     title: "",
                     author: ""
                 })
+                toast.success("Post published successfully");
             }
             return data;
         }
