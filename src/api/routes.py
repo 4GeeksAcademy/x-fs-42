@@ -104,7 +104,7 @@ def delete_user(id):
 def get_posts():
 
     posts = Post.query.all()
-    result = [ post.serialize() for post in posts ]
+    result = [ post.serialize() for post in reversed(posts) ]
     return jsonify(result), 200
 
 @api.route('/posts', methods=['POST'])

@@ -25,7 +25,7 @@ export default function storeReducer(store, action = {}) {
     case 'add_post':
       return {
         ...store,
-        posts: [...store.posts, action.payload]
+        posts: [ action.payload, ...store.posts]
       };
 
     case 'load_posts':

@@ -31,7 +31,7 @@ const NewPost = () => {
             if(response.status == 201){
                 dispatch({
                     type: "add_post",
-                    payload: post
+                    payload: data
                 });
                 setNewPost({
                     title: "",

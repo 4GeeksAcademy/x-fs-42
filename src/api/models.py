@@ -1,4 +1,6 @@
 from flask_sqlalchemy import SQLAlchemy
+from datetime import datetime, timezone
+import arrow
 
 db = SQLAlchemy()
 
@@ -46,6 +48,8 @@ class Post(db.Model):
 
     author_id = db.Column(db.Integer, db.ForeignKey('user.id'), nullable=False)
 
+    time_stamp = db.Column(db.DateTime, default=datetime.now(timezone.utc), nullable=True)
+
     # Relación con la tabla User (1 a muchos)
     author = db.relationship('User', backref=db.backref(
         'publicaciones', cascade='all, delete-orphan')
@@ -61,8 +65,12 @@ class Post(db.Model):
         return f'<Post {self.title}>'
 
     def serialize(self):
+
+        humanize_date = "No date" if not self.time_stamp else arrow.get(self.time_stamp).humanize()
+
         return {
             "id": self.id,
             "title": self.title,
             "author": self.author.username,
+            "date": humanize_date
         }
