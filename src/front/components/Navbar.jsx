@@ -9,7 +9,7 @@ export const Navbar = () => {
 					<span className="mb-0 text-white">4Geeks</span>
 				</Link>
 				<div className="ml-auto">
-					<Link to="/demo" className="text-decoration-none">
+					<Link to="/profile" className="text-decoration-none">
 						<button className="btn btn-light">Profile</button>
 					</Link>
 				</div>

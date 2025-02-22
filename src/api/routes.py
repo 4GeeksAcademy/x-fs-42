@@ -28,6 +28,15 @@ def get_users():
     usuarios_en_formato_json = [ usuario.serialize() for usuario in usuarios_de_la_db ]
     return jsonify(usuarios_en_formato_json), 200
 
+@api.route('/users/<int:id>', methods=['GET'])
+def get_user(id):
+    usuario_de_la_db = User.query.get(id)
+
+    if not usuario_de_la_db:
+        raise APIException("User not found", status_code=404)
+
+    return jsonify(usuario_de_la_db.serialize()), 200
+
 @api.route('/users', methods=['POST'])
 def create_user():
     body = request.get_json()
