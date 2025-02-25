@@ -7,6 +7,10 @@ from api.utils import generate_sitemap, APIException, check_fields
 from flask_cors import CORS
 from flask_jwt_extended import create_access_token
 
+# Importamos el decorador jwt_required para proteger las rutas que necesiten autenticación
+from flask_jwt_extended import jwt_required
+from flask_jwt_extended import get_jwt_identity
+
 
 api = Blueprint('api', __name__)
 
@@ -141,6 +145,7 @@ def get_posts():
     return jsonify(result), 200
 
 @api.route('/posts', methods=['POST'])
+@jwt_required() # Esta ruta necesita autenticación
 def create_post():
 
     body = request.get_json()
@@ -148,15 +153,17 @@ def create_post():
     if not body:
         raise APIException("You need to specify the request body as a json object", status_code=400)
 
-    fields = ["title", "author_email"]
-    title, author_email = check_fields(body, fields)
+    if "title" not in body:
+        raise APIException("You need to specify the title", status_code=400)
 
-    searched_author = User.query.filter_by(email=author_email).first()
+    author_username= get_jwt_identity()
+
+    searched_author = User.query.filter_by(username=author_username).first()
 
     if not searched_author:
         raise APIException("Author not found", status_code=404)
 
-    new_post = Post(title=title, author=searched_author)
+    new_post = Post(title=body.get("title"), author=searched_author)
 
     try:
         db.session.add(new_post)

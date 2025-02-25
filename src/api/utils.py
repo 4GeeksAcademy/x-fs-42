@@ -40,6 +40,7 @@ def generate_sitemap(app):
         <p>Remember to specify a real endpoint path like: </p>
         <ul style="text-align: left;">"""+links_html+"</ul></div>"
 
+# todo: check for bugs when fields are like this: ["title"]
 def check_fields(body, fields):
     for key in fields:
         if key not in body:
