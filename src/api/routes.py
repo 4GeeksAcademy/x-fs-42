@@ -5,6 +5,8 @@ from flask import Flask, request, jsonify, url_for, Blueprint
 from api.models import db, User, Post
 from api.utils import generate_sitemap, APIException, check_fields
 from flask_cors import CORS
+from flask_jwt_extended import create_access_token
+
 
 api = Blueprint('api', __name__)
 
@@ -20,6 +22,28 @@ def handle_hello():
     }
 
     return jsonify(response_body), 200
+
+@api.route("/login", methods=["POST"])
+def login():
+
+    fields = ["username", "password"]
+    username, password = check_fields(request.json, fields)
+
+    searched_user = User.query.filter_by(username=username).first()
+
+    if not searched_user:
+        return jsonify({"msg": "Bad username or password"}), 401
+
+    if searched_user.password != password:
+        return jsonify({"msg": "Bad username or password"}), 401
+
+    access_token = create_access_token(identity=username)
+    return jsonify({
+        "access_token": access_token,
+        "user_id": searched_user.id,
+        "username": searched_user.username,
+        "email": searched_user.email
+    }), 200
 
 
 @api.route('/users', methods=['GET'])
@@ -163,3 +187,5 @@ def delete_post(id):
         raise APIException(str(error), status_code=500)
     
     return jsonify({ "success": "ok" }), 200
+
+
