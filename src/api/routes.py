@@ -10,7 +10,7 @@ from flask_jwt_extended import create_access_token
 # Importamos el decorador jwt_required para proteger las rutas que necesiten autenticación
 from flask_jwt_extended import jwt_required
 from flask_jwt_extended import get_jwt_identity
-
+from flask_jwt_extended import get_jwt
 
 api = Blueprint('api', __name__)
 
@@ -49,6 +49,12 @@ def login():
         "email": searched_user.email
     }), 200
 
+
+@api.route('/token', methods=['GET'])
+@jwt_required()
+def check_token():
+    token = get_jwt()
+    return jsonify(token=token), 200
 
 @api.route('/users', methods=['GET'])
 def get_users():
