@@ -80,11 +80,11 @@ def create_user():
         raise APIException("You need to specify the request body as a json object", status_code=400)
     else:
 
-        fields = ["email", "password", "username", "first_name", "last_name"]
+        fields = ["email", "password", "username"]
         
-        email, password, username, first_name, last_name = check_fields(body, fields)
+        email, password, username = check_fields(body, fields)
 
-        new_user = User(email=email, password=password, username=username, first_name=first_name, last_name=last_name)
+        new_user = User(email=email, password=password, username=username)
 
         try:
             db.session.add(new_user)

@@ -12,6 +12,32 @@ const Singup = () => {
     const [ showPassword, setShowPassword ] = useState(false);
     const [ showConfirmPassword, setShowConfirmPassword ] = useState(false);
 
+    const userPost = async (newUser) => {
+        const myHeaders = new Headers();
+        myHeaders.append("Content-Type", "application/json");
+
+        const userBody = JSON.stringify(newUser);
+
+        const requestOptions = {
+            method: "POST",
+            headers: myHeaders,
+            body: userBody
+        };
+
+        const resp = await fetch( import.meta.env.VITE_BACKEND_URL +  "/api/users", requestOptions)
+        const data = await resp.json();
+        if(!resp.ok) {
+            toast.error(data.message);
+            return
+        }
+        toast.success("User registered");
+        console.log(data);
+        setEmail("");
+        setPassword("");
+        setConfirmPassword("");
+        setUsername("");
+    }
+
     const register = (email, username, password, confirmPassword) => {
         if( !email || !password || !confirmPassword || !username ) {
             toast.error("Please fill all the fields");
@@ -21,7 +47,11 @@ const Singup = () => {
             toast.error("Passwords do not match");
             return;
         }
-        toast.success("User registered");
+        userPost({
+            email,
+            password,
+            username
+        });
     }
 
     return <main className="form-signin w-100 m-auto
