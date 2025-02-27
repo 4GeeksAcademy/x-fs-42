@@ -3,11 +3,10 @@ import useGlobalReducer from "../hooks/useGlobalReducer.jsx";
 import toast from "react-hot-toast";
 
 const NewPost = () => {
-    const { dispatch } = useGlobalReducer();
+    const { store, dispatch } = useGlobalReducer();
 
     const [newPost, setNewPost] = useState({
         title: "",
-        author: ""
     });
 
     const handleForm = (event) => {
@@ -15,15 +14,21 @@ const NewPost = () => {
 
         const publishPost = async (post) => {
 
-            if(post.title.trim() === "" || post.author_email.trim() === ""){
-                toast.error("Title and Author e-mail are required");
-                throw new Error("Title and Author e-mail are required");
+            if(!store.token){
+                toast.error("You must be logged in to publish a post");
+                throw new Error("You must be logged in to publish a post");
+            }
+
+            if(post.title.trim() === ""){
+                toast.error("Title is required");
+                throw new Error("Title is required");
             }
 
             const response = await fetch(import.meta.env.VITE_BACKEND_URL + "api/posts", {
                 method: "POST",
                 headers: {
-                    "Content-Type": "application/json"
+                    "Content-Type": "application/json",
+                    "Authorization": `Bearer ${store.token}`
                 },
                 body: JSON.stringify(post)
             });
@@ -34,14 +39,13 @@ const NewPost = () => {
                     payload: data
                 });
                 setNewPost({
-                    title: "",
-                    author: ""
+                    title: ""
                 })
                 toast.success("Post published successfully");
             }
             return data;
         }
-        publishPost({ title: newPost.title, author_email: newPost.author });
+        publishPost({ title: newPost.title });
     }
 
     return (
@@ -64,16 +68,7 @@ const NewPost = () => {
                         ></textarea>
                     </div>
                     <div className="form-group d-flex justify-content-end">
-                        <input 
-                            type="text" 
-                            className="form-control" 
-                            onChange={(event) => setNewPost({ ...newPost, author: event.target.value })}
-                            value={newPost.author || ""}
-                            id="author" 
-                            name="author" 
-                            placeholder="Author"
-                        />
-                        <button type="submit" className="btn btn-primary rounded-circle ms-2">
+                        <button type="submit" className="btn btn-primary rounded-pill">
                             <span className=" d-flex justify-content-center align-items-center">
                             <i className="fa-solid fa-plus"></i>
                             </span>
