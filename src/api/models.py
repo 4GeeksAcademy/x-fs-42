@@ -13,13 +13,13 @@ class User(db.Model):
 
     username = db.Column(db.String(80), unique=True, nullable=False)
 
-    first_name = db.Column(db.String(150), unique=False, nullable=False)
-    last_name = db.Column(db.String(150), unique=False, nullable=False)
+    first_name = db.Column(db.String(150), unique=False, nullable=True)
+    last_name = db.Column(db.String(150), unique=False, nullable=True)
 
     is_active = db.Column(db.Boolean(), unique=False, nullable=False)
 
     # constructor
-    def __init__(self, email, password, username, first_name, last_name, is_active=True):
+    def __init__(self, email, password, username, first_name="", last_name="", is_active=True):
         self.email = email
         self.password = password
         self.username = username
@@ -71,6 +71,6 @@ class Post(db.Model):
         return {
             "id": self.id,
             "title": self.title,
-            "author": self.author.username,
+            "author": self.author.username if self.author.username else self.author.email,
             "date": humanize_date
         }

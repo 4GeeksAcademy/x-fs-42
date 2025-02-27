@@ -1,14 +1,28 @@
 import React from "react";
 import { useState } from "react";
+import toast from "react-hot-toast";
 
 const Singup = () => {
 
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
     const [confirmPassword, setConfirmPassword] = useState("");
+    const [ username, setUsername ] = useState("");
 
     const [ showPassword, setShowPassword ] = useState(false);
     const [ showConfirmPassword, setShowConfirmPassword ] = useState(false);
+
+    const register = (email, username, password, confirmPassword) => {
+        if( !email || !password || !confirmPassword || !username ) {
+            toast.error("Please fill all the fields");
+            return;
+        }
+        if( password !== confirmPassword ) {
+            toast.error("Passwords do not match");
+            return;
+        }
+        toast.success("User registered");
+    }
 
     return <main className="form-signin w-100 m-auto
             d-flex justify-content-center align-items-center"
@@ -28,6 +42,13 @@ const Singup = () => {
                     className="form-control" placeholder="name@example.com"
                 />
                 <label for="floatingInput">Email address</label>
+            </div>
+
+            <div className="form-floating">
+                <input type="text" value={username || ""} onChange={ event => setUsername(event.target.value)}
+                    className="form-control" placeholder="your username"
+                />
+                <label for="floatingInput">Username</label>
             </div>
 
             <div className="d-flex justify-content-between">
@@ -53,7 +74,6 @@ const Singup = () => {
                         value={confirmPassword || ""} onChange={ event => setConfirmPassword(event.target.value)}
                     />
                     <label for="floatingPassword">Confirm Password</label>
-                        
                 </div>
                 <button className="btn btn-light col-1" type="button"
                     onClick={ () => setShowConfirmPassword(!showConfirmPassword) }
@@ -71,10 +91,9 @@ const Singup = () => {
                 </label>
             </div> */}
             <button className="btn btn-primary w-100 py-2"
-                onClick={ () => console.log(email, password, confirmPassword)}
+                onClick={ () => register(email, username, password, confirmPassword)}
             >
                 Sign in
-
             </button>
         </div>
     </main>
