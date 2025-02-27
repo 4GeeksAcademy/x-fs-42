@@ -40,12 +40,16 @@ const NewPost = () => {
                 });
                 setNewPost({
                     title: ""
-                })
-                toast.success("Post published successfully");
+                });
             }
             return data;
         }
-        publishPost({ title: newPost.title });
+
+        toast.promise(publishPost({ title: newPost.title }), {
+            loading: "Publishing post...",
+            success: "Post published successfully",
+            error: "An error occurred while publishing the post"
+        });
     }
 
     return (
