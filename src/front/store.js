@@ -15,7 +15,9 @@ export const initialStore=()=>{
     ],
     posts: [
 
-    ]
+    ],
+    user: null,
+    token: null || localStorage.getItem('token') // busca si estamos logueados
   }
 }
 
@@ -26,6 +28,18 @@ export default function storeReducer(store, action = {}) {
       return {
         ...store,
         posts: [ action.payload, ...store.posts]
+      };
+    
+    case 'assign_user':
+      return {
+        ...store,
+        user: action.payload
+      };
+
+    case 'set_token':
+      return {
+        ...store,
+        token: action.payload
       };
 
     case 'load_posts':

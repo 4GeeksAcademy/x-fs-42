@@ -30,18 +30,18 @@ def handle_hello():
 @api.route("/login", methods=["POST"])
 def login():
 
-    fields = ["username", "password"]
-    username, password = check_fields(request.json, fields)
+    fields = ["email", "password"]
+    email, password = check_fields(request.json, fields)
 
-    searched_user = User.query.filter_by(username=username).first()
+    searched_user = User.query.filter_by(email=email).first()
 
     if not searched_user:
-        return jsonify({"msg": "Bad username or password"}), 401
+        return jsonify({"msg": "Bad email or password"}), 401
 
     if searched_user.password != password:
         return jsonify({"msg": "Bad username or password"}), 401
 
-    access_token = create_access_token(identity=username)
+    access_token = create_access_token(identity=email)
     return jsonify({
         "access_token": access_token,
         "user_id": searched_user.id,
@@ -55,6 +55,13 @@ def login():
 def check_token():
     token = get_jwt()
     return jsonify(token=token), 200
+
+@api.route('/users/me', methods=['GET'])
+@jwt_required()
+def get_me():
+    email = get_jwt_identity()
+    user = User.query.filter_by(email=email).first()
+    return jsonify(user.serialize()), 200
 
 @api.route('/users', methods=['GET'])
 def get_users():
@@ -163,9 +170,9 @@ def create_post():
     if "title" not in body:
         raise APIException("You need to specify the title", status_code=400)
 
-    author_username= get_jwt_identity()
+    author = get_jwt_identity()
 
-    searched_author = User.query.filter_by(username=author_username).first()
+    searched_author = User.query.filter_by(email=author).first()
 
     if not searched_author:
         raise APIException("Author not found", status_code=404)
