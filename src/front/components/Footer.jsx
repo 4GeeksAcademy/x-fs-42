@@ -1,11 +1,14 @@
 export const Footer = () => (
-	<footer className="footer mt-auto py-3 text-center">
-		<p>
-			Check the <a target="_blank" href="https://4geeks.com/docs/start/start-react-advanced-project">template documentation</a> <i className="fa-solid fa-file"></i> for help.
-		</p>
-		<p>
-			Made with <i className="fa fa-heart text-danger" /> by{" "}
-			<a href="http://www.4geeksacademy.com">4Geeks Academy</a>
-		</p>
-	</footer>
+	<div class="container footer mt-auto">
+		<footer class="py-3 my-4">
+			<ul class="nav justify-content-center border-bottom pb-3 mb-3">
+			<li class="nav-item"><a href="#" class="nav-link px-2 text-body-secondary">Home</a></li>
+			<li class="nav-item"><a href="#" class="nav-link px-2 text-body-secondary">Features</a></li>
+			<li class="nav-item"><a href="#" class="nav-link px-2 text-body-secondary">Pricing</a></li>
+			<li class="nav-item"><a href="#" class="nav-link px-2 text-body-secondary">FAQs</a></li>
+			<li class="nav-item"><a href="#" class="nav-link px-2 text-body-secondary">About</a></li>
+			</ul>
+			<p class="text-center text-body-secondary">© 2024 Company, Inc</p>
+		</footer>
+	</div>
 );

@@ -71,6 +71,7 @@ def get_user(id):
 
     return jsonify(usuario_de_la_db.serialize()), 200
 
+# TODO: On register return a valid token to auto login
 @api.route('/users', methods=['POST'])
 def create_user():
     body = request.get_json()

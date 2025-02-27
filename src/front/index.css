@@ -1,0 +1,12 @@
+body {
+    min-height: 100vh;
+    margin: 0;
+}
+
+#id {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+    background-color: #f0f0f0;
+}
