@@ -25,9 +25,14 @@ export default function storeReducer(store, action = {}) {
   switch(action.type){
     
     case 'add_post':
+
+      const userWithPost = store.user;
+      userWithPost.post = [ action.payload, ...store.user.post];
+
       return {
         ...store,
-        posts: [ action.payload, ...store.posts]
+        posts: [ action.payload, ...store.posts],
+        user: userWithPost
       };
     
     case 'assign_user':
