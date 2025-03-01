@@ -1,23 +1,10 @@
 import React, { useState } from "react";
 import SimpleCard from "../components/SimpleCard";
+import useGlobalReducer from "../hooks/useGlobalReducer";
 
 const Profile = () => {
-    const [user, setUser] = React.useState({
-        name: 'John Doe',
-        email: 'john@example.com',
-        posts: [
-            { id: 1, title: 'First Post', content: 'Hello world!', date: '2023-07-01' },
-            { id: 2, title: 'Second Post', content: 'Another post here', date: '2023-07-02' }
-        ]
-    });
 
-    const id = 3;
-
-    React.useEffect(() => {
-        fetch(import.meta.env.VITE_BACKEND_URL + `api/users/${id}`)
-            .then(response => response.json())
-            .then(data => setUser(data));
-    }, [id]);
+    const { store } = useGlobalReducer();
 
     return (
         <div className="container py-5">
@@ -30,9 +17,9 @@ const Profile = () => {
                                 className="rounded-circle mb-3" 
                                 alt="Profile"
                             />
-                            <h3 className="card-title">{user.name}</h3>
+                            <h3 className="card-title">{store.user && store.user.name}</h3>
                             <p className="card-text text-muted">
-                                <i className="bi bi-envelope"></i> {user.email}
+                                <i className="bi bi-envelope"></i> {store.user && store.user.email}
                             </p>
                             <div className="d-grid gap-2">
                                 <button className="btn btn-primary">Edit Profile</button>
@@ -46,7 +33,7 @@ const Profile = () => {
                             <h4 className="mb-0">My Posts</h4>
                         </div>
                         <div className="card-body">
-                            {user && user.post && user.post.map(post => (
+                            {store.user && store.user.post && store.user.post.map(post => (
                                 <SimpleCard key={post.id} {...post} />
                             ))}
                         </div>

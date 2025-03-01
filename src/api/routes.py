@@ -46,7 +46,8 @@ def login():
         "access_token": access_token,
         "user_id": searched_user.id,
         "username": searched_user.username,
-        "email": searched_user.email
+        "email": searched_user.email,
+        "post": [ post.serialize() for post in searched_user.publicaciones ]
     }), 200
 
 

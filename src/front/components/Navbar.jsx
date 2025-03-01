@@ -1,11 +1,13 @@
 import { useEffect } from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import useGlobalReducer from "../hooks/useGlobalReducer";
 import toast from "react-hot-toast";
 
 export const Navbar = () => {
 
 	const { store, dispatch } = useGlobalReducer();
+
+	const navigate = useNavigate();
 
 	const getProfile = async (token) => {
 		const myHeaders = new Headers();
@@ -32,6 +34,8 @@ export const Navbar = () => {
 	useEffect(() => {
 		if(store.token) {
 			getProfile(store.token);
+		}else{
+			navigate("/signup");
 		}
 	}, []);
 
@@ -69,6 +73,7 @@ export const Navbar = () => {
 							localStorage.removeItem("token");
 							dispatch({ type: "set_token", payload: null });
 							dispatch({ type: "assign_user", payload: null });
+							navigate("/");
 						}}
 						>
 							Log Out

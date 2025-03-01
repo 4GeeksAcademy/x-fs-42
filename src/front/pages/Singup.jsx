@@ -71,14 +71,14 @@ const Singup = () => {
                 <input type="email" value={email || ""} onChange={ event => setEmail(event.target.value)}
                     className="form-control" placeholder="name@example.com"
                 />
-                <label for="floatingInput">Email address</label>
+                <label htmlFor="floatingInput">Email address</label>
             </div>
 
             <div className="form-floating">
                 <input type="text" value={username || ""} onChange={ event => setUsername(event.target.value)}
                     className="form-control" placeholder="your username"
                 />
-                <label for="floatingInput">Username</label>
+                <label htmlFor="floatingInput">Username</label>
             </div>
 
             <div className="d-flex justify-content-between">
@@ -86,7 +86,7 @@ const Singup = () => {
                     <input type={ showPassword ? "text" : "password" } className="form-control"  placeholder="Password"
                         value={password || ""} onChange={ event => setPassword(event.target.value)}
                     />
-                    <label for="floatingPassword">Password</label>
+                    <label htmlFor="floatingPassword">Password</label>
                         
                 </div>
                 <button className="btn btn-light col-1" type="button"
@@ -103,7 +103,7 @@ const Singup = () => {
                     <input type={ showConfirmPassword ? "text" : "password" } className="form-control"  placeholder="Confirm Password"
                         value={confirmPassword || ""} onChange={ event => setConfirmPassword(event.target.value)}
                     />
-                    <label for="floatingPassword">Confirm Password</label>
+                    <label htmlFor="floatingPassword">Confirm Password</label>
                 </div>
                 <button className="btn btn-light col-1" type="button"
                     onClick={ () => setShowConfirmPassword(!showConfirmPassword) }
@@ -116,7 +116,7 @@ const Singup = () => {
 
             {/* <div className="form-check text-start my-3">
                 <input className="form-check-input" type="checkbox" value="remember-me" id="flexCheckDefault"/>
-                <label className="form-check-label" for="flexCheckDefault">
+                <label className="form-check-label" htmlFor="flexCheckDefault">
                     Remember me
                 </label>
             </div> */}
